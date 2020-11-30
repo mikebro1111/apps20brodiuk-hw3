@@ -54,15 +54,61 @@ public class SmartArrayApp {
 
     public static String[]
             findDistinctStudentNamesFrom2ndYearWithGPAgt4AndOrderedBySurname(Student[] students) {
+        SmartArray sa = new BaseArray(students);
+        sa = new DistinctDecorator(sa);
 
-        // Hint: to convert Object[] to String[] - use the following code
-        //Object[] result = studentSmartArray.toArray();
-        //return Arrays.copyOf(result, result.length, String[].class);
-        return null;
+        MyPredicate pr = new MyPredicate() {
+            @Override
+            public boolean test(Object t) {
+                return ((Student) t).getYear() >= 2;
+            }
+        };
+        sa = new FilterDecorator(sa, pr);
+
+
+
+        MyPredicate pr1 = new MyPredicate() {
+            @Override
+            public boolean test(Object t) {
+                return ((Student) t).getGPA() >= 4;
+            }
+        };
+        sa = new FilterDecorator(sa, pr1);
+
+
+
+
+        String[] result = new String[sa.size()];
+        for (int i = 0; i < sa.size(); i++) {
+            result[i] = ((Student) sa.toArray()[i]).getName();
+        }
+        Arrays.sort(result);
+        return Arrays.copyOf(result, result.length);
+
+
+
+
     }
     public static void main(String[] args){
         Integer[] integers = {-1, 2, 0, 1, -5, 3, 3, -1};
         Object[] result = filterPositiveIntegersSortAndMultiplyBy2(integers);
         System.out.println(Arrays.toString(result));
+
+        Student[] students = {
+                new Student("Ivar", "Grimstad", 3.9, 2),
+                new Student("Ittai", "Zeidman", 4.5, 1),
+                new Student("Antons", "Kranga", 4.0, 2),
+                new Student("Burr", "Sutter", 4.2, 2),
+                new Student("Philipp", "Krenn", 4.3, 3),
+                new Student("Tomasz", "Borek", 4.1, 2),
+                new Student("Ittai", "Zeidman", 4.5, 1),
+                new Student("Burr", "Sutter", 4.2, 2)};
+        Object[] equals = findDistinctStudentNamesFrom2ndYearWithGPAgt4AndOrderedBySurname(students);
+//        findDistinctStudentNamesFrom2ndYearWithGPAgt4AndOrderedBySurname(students);
+        System.out.println(Arrays.toString(equals));
     }
+
+
+
+
 }
