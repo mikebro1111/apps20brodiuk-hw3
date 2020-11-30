@@ -1,9 +1,12 @@
 package ua.edu.ucu;
 
 import java.util.Arrays;
+import java.util.logging.Filter;
+
 import ua.edu.ucu.functions.MyComparator;
 import ua.edu.ucu.functions.MyFunction;
 import ua.edu.ucu.functions.MyPredicate;
+import ua.edu.ucu.smartarr.*;
 
 public class SmartArrayApp {
 
@@ -31,19 +34,20 @@ public class SmartArrayApp {
             }
         };
 
-        // Input: [-1, 2, 0, 1, -5, 3]
+        // Input: [-1, 2, 0, 1, -5, 3x]
         SmartArray sa = new BaseArray(integers);
 
-        sa = new FilterDecorator(sa, pr); // Result: [2, 1, 3];
-        sa = new SortDecorator(sa, cmp); // Result: [1, 2, 3]
-        sa = new MapDecorator(sa, func); // Result: [2, 4, 6]
+//        sa = new DistinctDecorator(sa); //
+//        sa = new FilterDecorator(sa, pr); // Result: [2, 1, 3];
+//        sa = new MapDecorator(sa, func); // Result: [2, 4, 6];
+//        sa = new SortDecorator(sa, cmp); // Result: [1, 2, 3;
 
         // Alternative
-//        sa = new MapDecorator(
-//                    new SortDecorator(
-//                        new FilterDecorator(sa, pr),
-//                    cmp),
-//                func);
+        sa = new MapDecorator(
+                    new SortDecorator(
+                        new FilterDecorator(sa, pr),
+                    cmp),
+                func);
         Object[] result = sa.toArray();
         return Arrays.copyOf(result, result.length, Integer[].class);
     }
@@ -55,5 +59,10 @@ public class SmartArrayApp {
         //Object[] result = studentSmartArray.toArray();
         //return Arrays.copyOf(result, result.length, String[].class);
         return null;
+    }
+    public static void main(String[] args){
+        Integer[] integers = {-1, 2, 0, 1, -5, 3, 3, -1};
+        Object[] result = filterPositiveIntegersSortAndMultiplyBy2(integers);
+        System.out.println(Arrays.toString(result));
     }
 }

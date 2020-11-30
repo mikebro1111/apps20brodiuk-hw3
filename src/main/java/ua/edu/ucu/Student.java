@@ -19,6 +19,7 @@ class Student {
         return GPA;
     }
 
+
     public int getYear() {
         return year;
     }
@@ -29,6 +30,19 @@ class Student {
 
     public String getSurname() {
         return surname;
+    }
+
+    @Override
+    public boolean equals(Object rhs) {
+        if (rhs == null || rhs.getClass() != getClass()) {
+            return false;
+        }
+        Student student = (Student) rhs;
+
+        return this.GPA == student.GPA
+                && this.year == student.year
+                && this.name.equals(student.name)
+                && this.surname.equals(student.surname);
     }
 
     @Override
